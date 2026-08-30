@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/binding.json",
+  "title": "AgentBinding — однократная привязка блока к ключу агента (§8)",
+  "description": "У блока РОВНО ОДНА привязка; вторая недействительна — этим блок перестаёт быть перевоплощаемым, а украденный бланк бесполезен. Единственность по одному документу невыводима и проверяется отдельно. agent.key доказывает непрерывность, а не идентичность: ключ может сгенерировать кто угодно.",
+  "type": "object",
+  "properties": {
+    "type": { "const": "AgentBinding" },
+    "v": { "$ref": "common.json#/$defs/version" },
+    "emission": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
+    "block": { "$ref": "common.json#/$defs/range" },
+    "agent": { "$ref": "common.json#/$defs/key" },
+    "bound_at": { "$ref": "common.json#/$defs/timestamp" },
+    "signatures": {
+      "description": "Подписывается самим агентом: обращения к эмитенту в момент оформления не требуется.",
+      "$ref": "common.json#/$defs/signatures"
+    }
+  },
+  "required": ["type", "v", "emission", "block", "agent", "bound_at", "signatures"],
+  "additionalProperties": false
+}

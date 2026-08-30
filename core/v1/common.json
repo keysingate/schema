@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/common.json",
+  "title": "Общие определения ядра Keysingate",
+  "$defs": {
+    "uri": {
+      "description": "Непрозрачный идентификатор (§4.2). Ядро не знает и не проверяет, кто его выпустил.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
+    },
+    "multihash": {
+      "description": "SHA-256 в multihash с префиксом 1220 (§4).",
+      "type": "string",
+      "pattern": "^1220[0-9a-f]{64}$"
+    },
+    "timestamp": {
+      "description": "RFC 3339, UTC, с миллисекундами. Форма фиксирована, чтобы лексикографический порядок совпадал с хронологическим.",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$"
+    },
+    "base64url": {
+      "description": "base64url без выравнивания.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "alg": {
+      "description": "Ed25519 обязателен, ML-DSA-65 опционален. Значение вне перечисления отвергается (§4.1) — не пропускается.",
+      "enum": ["Ed25519", "ML-DSA-65"]
+    },
+    "serial": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "range": {
+      "description": "Непрерывный диапазон номеров, границы включительно.",
+      "type": "object",
+      "properties": {
+        "from": { "$ref": "#/$defs/serial" },
+        "to": { "$ref": "#/$defs/serial" }
+      },
+      "required": ["from", "to"],
+      "additionalProperties": false
+    },
+    "key": {
+      "type": "object",
+      "properties": {
+        "kid": { "$ref": "#/$defs/uri" },
+        "alg": { "$ref": "#/$defs/alg" },
+        "key": { "$ref": "#/$defs/base64url" }
+      },
+      "required": ["kid", "alg", "key"],
+      "additionalProperties": false
+    },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "kid": { "$ref": "#/$defs/uri" },
+        "alg": { "$ref": "#/$defs/alg" },
+        "value": { "$ref": "#/$defs/base64url" }
+      },
+      "required": ["kid", "alg", "value"],
+      "additionalProperties": false
+    },
+    "signatures": {
+      "description": "Массив независимых подписей, НЕ склеенная строка (§4.1). Массив по конструкции: второй алгоритм добавляется, а не заменяет первый.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/signature" }
+    },
+    "version": {
+      "description": "Мажорная версия ядра. Документ с v выше поддерживаемой отвергается (§14); v=0 не существует.",
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

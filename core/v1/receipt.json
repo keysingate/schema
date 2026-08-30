@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/receipt.json",
+  "title": "Receipt — заполненный и подписанный бланк (§9)",
+  "type": "object",
+  "properties": {
+    "@context": { "const": "urn:keysingate:core:v1" },
+    "type": { "const": "Receipt" },
+    "v": { "$ref": "common.json#/$defs/version" },
+    "emission": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
+    "serial": { "$ref": "common.json#/$defs/serial" },
+    "binding": {
+      "description": "Хеш привязки своего блока (§8 правило 3).",
+      "$ref": "common.json#/$defs/multihash"
+    },
+    "created_at": {
+      "description": "Часы агента, НЕДОВЕРЕННОЕ значение. Доказательную силу имеют только границы §11.",
+      "$ref": "common.json#/$defs/timestamp"
+    },
+    "payload": {
+      "description": "type — точка расширения, ядром не интерпретируется. Содержимое НЕ ОБЯЗАНО быть открытым: допускается хеш вместо тела.",
+      "type": "object",
+      "properties": { "type": { "$ref": "common.json#/$defs/uri" } },
+      "required": ["type"]
+    },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "signatures": { "$ref": "common.json#/$defs/signatures" }
+  },
+  "required": ["@context", "type", "v", "emission", "serial", "binding", "created_at", "payload", "signatures"],
+  "additionalProperties": false,
+  "$defs": {
+    "provenance": {
+      "description": "Цепочка происхождения (§9.1). Модель — не «хеш переживает преобразование», а «каждое преобразование порождает нового проверяемого наследника». Совпадает с ingredient/parentOf в C2PA.",
+      "type": "object",
+      "properties": {
+        "parents": {
+          "description": "Массив по конструкции: слияние нескольких источников в один результат обычно, а не исключение.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "receipt": {
+                "description": "Хеш родительской квитанции, а не её копия: вложение полного родителя увеличивает размер цепочки линейно по её длине.",
+                "$ref": "common.json#/$defs/multihash"
+              },
+              "source_content_hash": {
+                "description": "Какой именно версией исходника пользовались: родительская квитанция могла описывать не тот файл, что подавался на вход.",
+                "$ref": "common.json#/$defs/multihash"
+              },
+              "relationship": { "$ref": "common.json#/$defs/uri" }
+            },
+            "required": ["receipt", "source_content_hash", "relationship"],
+            "additionalProperties": false
+          }
+        },
+        "operation": {
+          "type": "object",
+          "properties": {
+            "type": { "$ref": "common.json#/$defs/uri" },
+            "parameters": {}
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        "authorization": {
+          "description": "Для ядра НЕПРОЗРАЧНА: ref есть хеш, action есть строка. Модель прав лежит вне ядра (§17) — проверяется наличие и целостность ссылки, но не её смысл.",
+          "type": "object",
+          "properties": {
+            "ref": { "$ref": "common.json#/$defs/multihash" },
+            "action": { "type": "string", "minLength": 1 }
+          },
+          "required": ["ref", "action"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["parents", "operation"],
+      "additionalProperties": false
+    }
+  }
+}

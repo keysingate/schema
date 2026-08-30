@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/emission.json",
+  "title": "Emission — подписанное объявление диапазона номеров (§5)",
+  "description": "Печать всего диапазона стоит одну подпись. Бланки выводятся из эмиссии детерминированно и отдельными документами не существуют.",
+  "type": "object",
+  "properties": {
+    "@context": { "const": "urn:keysingate:core:v1" },
+    "type": { "const": "Emission" },
+    "v": { "$ref": "common.json#/$defs/version" },
+    "id": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
+    "class": {
+      "description": "Различает режим включения в журнал, а не формат: квитанция во всех трёх классах устроена одинаково (§10).",
+      "enum": ["heavy", "light", "bare"]
+    },
+    "range": { "$ref": "common.json#/$defs/range" },
+    "block_size": { "type": "integer", "minimum": 1 },
+    "block_ttl_days": { "type": "integer", "minimum": 1 },
+    "issuer": { "$ref": "common.json#/$defs/uri" },
+    "issued_at": {
+      "description": "Даёт нижнюю границу времени любой квитанции на бланке этой эмиссии (§6).",
+      "$ref": "common.json#/$defs/timestamp"
+    },
+    "keys": { "type": "array", "minItems": 1, "items": { "$ref": "common.json#/$defs/key" } },
+    "signatures": { "$ref": "common.json#/$defs/signatures" }
+  },
+  "required": ["@context", "type", "v", "id", "class", "range", "block_size", "block_ttl_days", "issuer", "issued_at", "keys", "signatures"],
+  "additionalProperties": false
+}

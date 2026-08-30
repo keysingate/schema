@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/closure.json",
+  "title": "BlockClosure — закрывающая ведомость блока (§12)",
+  "description": "Три множества ОБЯЗАНЫ в объединении покрывать блок целиком и попарно не пересекаться. Схемой это не выражается — проверяется реализацией, раздельно: равенство суммы длин размеру блока пропускает пересечение вместе с пропуском. Для класса heavy used_not_submitted обязано быть пустым.",
+  "type": "object",
+  "properties": {
+    "type": { "const": "BlockClosure" },
+    "v": { "$ref": "common.json#/$defs/version" },
+    "emission": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
+    "block": { "$ref": "common.json#/$defs/range" },
+    "used_submitted": { "type": "array", "items": { "$ref": "common.json#/$defs/range" } },
+    "used_not_submitted": {
+      "description": "Квитанция выпущена, но в журнал не подавалась — времени не доказывает.",
+      "type": "array",
+      "items": { "$ref": "common.json#/$defs/range" }
+    },
+    "cancelled": { "type": "array", "items": { "$ref": "common.json#/$defs/range" } },
+    "closed_at": { "$ref": "common.json#/$defs/timestamp" },
+    "signatures": { "$ref": "common.json#/$defs/signatures" }
+  },
+  "required": ["type", "v", "emission", "block", "used_submitted", "used_not_submitted", "cancelled", "closed_at", "signatures"],
+  "additionalProperties": false
+}

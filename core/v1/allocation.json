@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.keysingate.com/core/v1/allocation.json",
+  "title": "BlockAllocation — выдача блока держателю (§7)",
+  "description": "Координация требуется только здесь. Использование номеров внутри блока — офлайн, в любом порядке.",
+  "type": "object",
+  "properties": {
+    "type": { "const": "BlockAllocation" },
+    "v": { "$ref": "common.json#/$defs/version" },
+    "emission": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
+    "block": { "$ref": "common.json#/$defs/range" },
+    "holder": { "$ref": "common.json#/$defs/uri" },
+    "allocated_at": { "$ref": "common.json#/$defs/timestamp" },
+    "expires_at": {
+      "description": "После этого момента неиспользованные номера блока недействительны (§7 правило 4).",
+      "$ref": "common.json#/$defs/timestamp"
+    },
+    "prev_closure": {
+      "description": "Обязателен начиная со второго блока (§7 правило 3). Для первого поле ОПУСКАЕТСЯ, а не равно null: отсутствующее поле и null — разные документы (§3).",
+      "$ref": "common.json#/$defs/multihash"
+    },
+    "signatures": { "$ref": "common.json#/$defs/signatures" }
+  },
+  "required": ["type", "v", "emission", "block", "holder", "allocated_at", "expires_at", "signatures"],
+  "additionalProperties": false
+}
