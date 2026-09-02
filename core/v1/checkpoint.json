@@ -1,22 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.keysingate.com/core/v1/checkpoint.json",
-  "title": "Checkpoint — подписанное состояние дерева журнала (§11.2)",
-  "description": "Публикуется не реже одного раза в 60 секунд. issued_at чекпоинта, в который включена квитанция, и есть её верхняя граница времени.",
+  "title": "Checkpoint - a signed state of the log tree (Section 11.2)",
+  "description": "Published at least once every 60 seconds. The issued_at of the checkpoint a receipt is included in is that receipt's upper time bound.",
   "type": "object",
   "properties": {
     "type": { "const": "Checkpoint" },
     "v": { "$ref": "common.json#/$defs/version" },
     "log_id": { "$ref": "common.json#/$defs/uri" },
     "tree_size": {
-      "description": "Ноль допустим: журнал, ещё ничего не принявший, публикует чекпоинт пустого дерева.",
+      "description": "Zero is allowed: a log that has accepted nothing yet publishes a checkpoint of the empty tree.",
       "type": "integer",
       "minimum": 0
     },
     "root": { "$ref": "common.json#/$defs/multihash" },
     "issued_at": { "$ref": "common.json#/$defs/timestamp" },
     "signatures": {
-      "description": "Оператор журнала и свидетели — массив, а не поле: свидетель добавляется, а не заменяет оператора.",
+      "description": "Log operator and witnesses - an array, not a field: a witness is added, it does not replace the operator.",
       "$ref": "common.json#/$defs/signatures"
     }
   },

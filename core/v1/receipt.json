@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.keysingate.com/core/v1/receipt.json",
-  "title": "Receipt — заполненный и подписанный бланк (§9)",
+  "title": "Receipt - a completed and signed form (Section 9)",
   "type": "object",
   "properties": {
     "@context": { "const": "urn:keysingate:core:v1" },
@@ -10,15 +10,15 @@
     "emission": { "type": "string", "pattern": "^ksg:em:[0-9]+$" },
     "serial": { "$ref": "common.json#/$defs/serial" },
     "binding": {
-      "description": "Хеш привязки своего блока (§8 правило 3).",
+      "description": "Hash of the binding of its own block (Section 8, rule 3).",
       "$ref": "common.json#/$defs/multihash"
     },
     "created_at": {
-      "description": "Часы агента, НЕДОВЕРЕННОЕ значение. Доказательную силу имеют только границы §11.",
+      "description": "The agent's clock, an UNTRUSTED value. Only the bounds in Section 11 carry evidentiary weight.",
       "$ref": "common.json#/$defs/timestamp"
     },
     "payload": {
-      "description": "type — точка расширения, ядром не интерпретируется. Содержимое НЕ ОБЯЗАНО быть открытым: допускается хеш вместо тела.",
+      "description": "type is an extension point and is not interpreted by the core. The content NEED NOT be disclosed: a hash may stand in for the body.",
       "type": "object",
       "properties": { "type": { "$ref": "common.json#/$defs/uri" } },
       "required": ["type"]
@@ -30,22 +30,22 @@
   "additionalProperties": false,
   "$defs": {
     "provenance": {
-      "description": "Цепочка происхождения (§9.1). Модель — не «хеш переживает преобразование», а «каждое преобразование порождает нового проверяемого наследника». Совпадает с ingredient/parentOf в C2PA.",
+      "description": "Provenance chain (Section 9.1). The model is not \"the hash survives transformation\" but \"every transformation yields a new verifiable heir\". It matches ingredient/parentOf in C2PA.",
       "type": "object",
       "properties": {
         "parents": {
-          "description": "Массив по конструкции: слияние нескольких источников в один результат обычно, а не исключение.",
+          "description": "An array by construction: merging several sources into one result is ordinary, not exceptional.",
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "object",
             "properties": {
               "receipt": {
-                "description": "Хеш родительской квитанции, а не её копия: вложение полного родителя увеличивает размер цепочки линейно по её длине.",
+                "description": "The hash of the parent receipt, not a copy of it: embedding the full parent grows the chain size linearly with its length.",
                 "$ref": "common.json#/$defs/multihash"
               },
               "source_content_hash": {
-                "description": "Какой именно версией исходника пользовались: родительская квитанция могла описывать не тот файл, что подавался на вход.",
+                "description": "Which version of the source was actually used: the parent receipt may describe a different file than the one fed as input.",
                 "$ref": "common.json#/$defs/multihash"
               },
               "relationship": { "$ref": "common.json#/$defs/uri" }
@@ -64,7 +64,7 @@
           "additionalProperties": false
         },
         "authorization": {
-          "description": "Для ядра НЕПРОЗРАЧНА: ref есть хеш, action есть строка. Модель прав лежит вне ядра (§17) — проверяется наличие и целостность ссылки, но не её смысл.",
+          "description": "OPAQUE to the core: ref is a hash, action is a string. The rights model lies outside the core (Section 17) - the presence and integrity of the reference are checked, but not its meaning.",
           "type": "object",
           "properties": {
             "ref": { "$ref": "common.json#/$defs/multihash" },

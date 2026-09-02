@@ -1,31 +1,31 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.keysingate.com/core/v1/common.json",
-  "title": "Общие определения ядра Keysingate",
+  "title": "Shared definitions for the Keysingate core",
   "$defs": {
     "uri": {
-      "description": "Непрозрачный идентификатор (§4.2). Ядро не знает и не проверяет, кто его выпустил.",
+      "description": "Opaque identifier (Section 4.2). The core neither knows nor checks who issued it.",
       "type": "string",
       "minLength": 1,
       "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:"
     },
     "multihash": {
-      "description": "SHA-256 в multihash с префиксом 1220 (§4).",
+      "description": "SHA-256 as a multihash with the 1220 prefix (Section 4).",
       "type": "string",
       "pattern": "^1220[0-9a-f]{64}$"
     },
     "timestamp": {
-      "description": "RFC 3339, UTC, с миллисекундами. Форма фиксирована, чтобы лексикографический порядок совпадал с хронологическим.",
+      "description": "RFC 3339, UTC, with milliseconds. The form is fixed so that lexicographic order matches chronological order.",
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$"
     },
     "base64url": {
-      "description": "base64url без выравнивания.",
+      "description": "base64url without padding.",
       "type": "string",
       "pattern": "^[A-Za-z0-9_-]+$"
     },
     "alg": {
-      "description": "Ed25519 обязателен, ML-DSA-65 опционален. Значение вне перечисления отвергается (§4.1) — не пропускается.",
+      "description": "Ed25519 is required; ML-DSA-65 is optional. A value outside the enumeration is rejected (Section 4.1), not skipped.",
       "enum": ["Ed25519", "ML-DSA-65"]
     },
     "serial": {
@@ -33,7 +33,7 @@
       "minimum": 0
     },
     "range": {
-      "description": "Непрерывный диапазон номеров, границы включительно.",
+      "description": "A contiguous range of serial numbers; both bounds inclusive.",
       "type": "object",
       "properties": {
         "from": { "$ref": "#/$defs/serial" },
@@ -63,12 +63,12 @@
       "additionalProperties": false
     },
     "signatures": {
-      "description": "Массив независимых подписей, НЕ склеенная строка (§4.1). Массив по конструкции: второй алгоритм добавляется, а не заменяет первый.",
+      "description": "An array of independent signatures, NOT a concatenated string (Section 4.1). An array by construction: a second algorithm is added, it does not replace the first.",
       "type": "array",
       "items": { "$ref": "#/$defs/signature" }
     },
     "version": {
-      "description": "Мажорная версия ядра. Документ с v выше поддерживаемой отвергается (§14); v=0 не существует.",
+      "description": "Core major version. A document whose v exceeds the supported version is rejected (Section 14); v=0 does not exist.",
       "type": "integer",
       "minimum": 1
     }

@@ -1,9 +1,9 @@
-# Схемы Keysingate
+# Keysingate schemas
 
-Машиночитаемые схемы документов ядра. Отдаются по адресам, совпадающим с полем
-`$id` внутри каждого файла:
+Machine-readable schemas for the core documents. They are served from the
+addresses that match the `$id` field inside each file:
 
-| Документ | Адрес |
+| Document | Address |
 |---|---|
 | `common` | <https://schema.keysingate.com/core/v1/common.json> |
 | `emission` | <https://schema.keysingate.com/core/v1/emission.json> |
@@ -13,21 +13,22 @@
 | `checkpoint` | <https://schema.keysingate.com/core/v1/checkpoint.json> |
 | `closure` | <https://schema.keysingate.com/core/v1/closure.json> |
 
-## Правка
+## Editing
 
-**Этот репозиторий не правится.** Он собирается из источника скриптом
-`scripts/publish_schemas.py`; правка здесь будет затёрта следующей сборкой и
-до тех пор будет расходиться с реализацией.
+**This repository is not edited.** It is built from the source by
+`scripts/publish_schemas.py`; an edit made here will be overwritten by the next
+build, and until then it will disagree with the implementation.
 
-## Чего схемы не выражают
+## What the schemas do not express
 
-Схема ограничивает форму, а не правила. За её пределами остаётся всё, что
-требует сравнения нескольких документов или арифметики: покрытие блока
-ведомостью, единственность привязки, обязательность `prev_closure` со второго
-блока, границы времени, подписи.
+A schema constrains shape, not rules. Everything that requires comparing several
+documents, or arithmetic, lies outside it: coverage of a block by its
+allocations, uniqueness of a binding, the requirement for `prev_closure` from the
+second block onward, time bounds, signatures.
 
-**Реализация, проверившая только схему, документ не проверила.**
+**An implementation that has checked only the schema has not checked the
+document.**
 
-## Лицензия
+## Licence
 
-Apache License 2.0 — см. `LICENSE`.
+Apache License 2.0 — see `LICENSE`.

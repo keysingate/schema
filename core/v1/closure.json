@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.keysingate.com/core/v1/closure.json",
-  "title": "BlockClosure — закрывающая ведомость блока (§12)",
-  "description": "Три множества ОБЯЗАНЫ в объединении покрывать блок целиком и попарно не пересекаться. Схемой это не выражается — проверяется реализацией, раздельно: равенство суммы длин размеру блока пропускает пересечение вместе с пропуском. Для класса heavy used_not_submitted обязано быть пустым.",
+  "title": "BlockClosure - a block closure statement (Section 12)",
+  "description": "The three sets MUST cover the block in full and be pairwise disjoint. A schema cannot express this - it is checked by the implementation, and separately: equality of the sum of lengths to the block size lets an overlap through together with a gap. For class heavy, used_not_submitted must be empty.",
   "type": "object",
   "properties": {
     "type": { "const": "BlockClosure" },
@@ -11,7 +11,7 @@
     "block": { "$ref": "common.json#/$defs/range" },
     "used_submitted": { "type": "array", "items": { "$ref": "common.json#/$defs/range" } },
     "used_not_submitted": {
-      "description": "Квитанция выпущена, но в журнал не подавалась — времени не доказывает.",
+      "description": "The receipt was issued but never submitted to the log - it proves no time.",
       "type": "array",
       "items": { "$ref": "common.json#/$defs/range" }
     },
